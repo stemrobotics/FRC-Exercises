@@ -1,4 +1,4 @@
-package Team4450.Lib;
+package org.usfirst.frc.team1111.robot;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +18,7 @@ import java.util.logging.LogRecord;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class Util
+public class Logging
 {
 	/**
 	 * Open print stream that writes to the log file. Example of use:
