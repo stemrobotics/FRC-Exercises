@@ -70,7 +70,6 @@ public class Logging
 	public static class CustomLogger 
 	{
         static private FileHandler 		fileTxt;
-        //static private SimpleFormatter	formatterTxt;
         static private LogFormatter		logFormatter;
         
         /**
