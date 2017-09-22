@@ -1,11 +1,9 @@
-package org.usfirst.frc.team1111.robot;
+package org.usfirst.frc.team4450.robot;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -22,52 +20,52 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class Logging
 {
 	/**
-	 * Open print stream that writes to the log file. Example of use:
-	 * exception.printStackTrace(Util.logPrintStream);
-	 */
-	public static final PrintStream	logPrintStream = new PrintStream(new LoggingOutputStream());
+     * Open print stream that writes to the log file. Example of use:
+     * exception.printStackTrace(Util.logPrintStream);
+     */
+    public static final PrintStream logPrintStream = new PrintStream(new LoggingOutputStream());
 
-	/**
-	 * Logging class for use by other classes to log though this custom logging scheme. All
-	 * logging should be done by calls to methods on this class instance or with the 
-	 * convenience methods of the Util class.
-	 */
-	public final static Logger logger = Logger.getGlobal();
-	
-	// Private constructor means this class cannot be instantiated. All access is static.
-	
-	private Logging()
-	{
-		
-	}
-		
-	/**
-	 * Configures and holds (static) classes for our custom logging system. 
-	 * Call setup() method to initialize logging.
-	 */
-	public static class CustomLogger 
-	{
-        static private FileHandler 		fileTxt;
-        static private LogFormatter		logFormatter;
+    /**
+     * Logging class for use by other classes to log though this custom logging scheme. All
+     * logging should be done by calls to methods on this class instance or with the 
+     * convenience methods of the Logging class.
+     */
+    public final static Logger logger = Logger.getGlobal();
         
-        /**
-         *  Initializes our logging system.
-         *  Call before using any logging methods.
-         */
-        static public void setup() throws IOException 
-        {
-            // get the global logger to configure it and add a file handler.
-            Logger logger = Logger.getGlobal();
+    // Private constructor means this class cannot be instantiated. All access is static.
+        
+    private Logging()
+    {
+              
+    }
+                
+    /**
+     * Configures and holds (static) classes for our custom logging system. 
+     * Call setup() method to initialize logging.
+     */
+    public static class CustomLogger 
+    {
+     	static private FileHandler              fileTxt;
+       	static private LogFormatter             logFormatter;
+        
+       	/**
+       	 *  Initializes our logging system.
+       	 *  Call before using any logging methods.
+       	 */
+       	static public void setup() throws IOException 
+       	{
+       		// get the global logger to configure it and add a file handler.
+       		Logger logger = Logger.getGlobal();
                    
-            logger.setLevel(Level.ALL);
+       		logger.setLevel(Level.ALL);
 
-            // If we decide to redirect system.out to our log handler, then following
-            // code will delete the default log handler for the console to prevent
-            // a recursive loop. We would only redirect system.out if we only want to
-            // log to the file. If we delete the console hanlder we can skip setting
-            // the formatter...otherwise we set our formatter on the console logger.
+       		// If we decide to redirect system.out to our log handler, then following
+       		// code will delete the default log handler for the console to prevent
+       		// a recursive loop. We would only redirect system.out if we only want to
+       		// log to the file. If we delete the console hanlder we can skip setting
+       		// the formatter...otherwise we set our formatter on the console logger.
             
-            Logger rootLogger = Logger.getLogger("");
+       		Logger rootLogger = Logger.getLogger("");
 
             Handler[] handlers = rootLogger.getHandlers();
             
@@ -87,20 +85,20 @@ public class Logging
             //if (true) throw new IOException("Test Exception");
             
             if (new File("/home/lvuser/Logging.txt.99").exists() != true)
-            	fileTxt = new FileHandler("/home/lvuser/Logging.txt");
+                fileTxt = new FileHandler("/home/lvuser/Logging.txt");
             else
-            	throw new IOException("Max number of log files reached.");
+                throw new IOException("Max number of log files reached.");
             
             fileTxt.setFormatter(logFormatter);
 
             logger.addHandler(fileTxt);
-        }
-	}
-	
-	// Our custom formatter for logging output.
-	
-	private static class LogFormatter extends Formatter 
-	{
+       	}
+    }
+        
+    // Our custom formatter for logging output.
+        
+    private static class LogFormatter extends Formatter 
+    {
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss:S");
         
         public LogFormatter()
@@ -120,79 +118,78 @@ public class Logging
         
             return buf.toString();
         }
-	}
-	
-	// An output stream that writes to our logging system. Writes data with flush on
-	// flush call or on a newline character in the stream.
-	
-	private static class LoggingOutputStream extends OutputStream 
-	{
-	    private static final int	DEFAULT_BUFFER_LENGTH = 2048;
-	    private boolean 			hasBeenClosed = false;
-	    private byte[] 				buf;
-	    private int 				count, curBufLength;
+    }
+        
+    // An output stream that writes to our logging system. Writes data with flush on
+    // flush call or on a newline character in the stream.
+        
+    private static class LoggingOutputStream extends OutputStream 
+    {
+        private static final int    DEFAULT_BUFFER_LENGTH = 2048;
+        private boolean                     hasBeenClosed = false;
+        private byte[]                              buf;
+        private int                                 count, curBufLength;
 
-	    public LoggingOutputStream()
-	    {
-	        curBufLength = DEFAULT_BUFFER_LENGTH;
-	        buf = new byte[curBufLength];
-	        count = 0;
-	    }
+        public LoggingOutputStream()
+        {
+            curBufLength = DEFAULT_BUFFER_LENGTH;
+            buf = new byte[curBufLength];
+            count = 0;
+        }
 
-	    public void write(final int b) throws IOException 
-	    {
-	        if (hasBeenClosed) {throw new IOException("The stream has been closed.");}
-	        
-	        // don't log nulls
-	        if (b == 0) return;
-	        
-	        // force flush on newline character, dropping the newline.
-	        if ((byte) b == '\n') 
-	        {
-	        	flush();
-	        	return;
-	        }
-	        
-	        // would this be writing past the buffer?
-	        if (count == curBufLength) 
-	        {
-	            // grow the buffer
-	            final int newBufLength = curBufLength + DEFAULT_BUFFER_LENGTH;
-	            final byte[] newBuf = new byte[newBufLength];
-	            System.arraycopy(buf, 0, newBuf, 0, curBufLength);
-	            buf = newBuf;
-	            curBufLength = newBufLength;
-	        }
+        public void write(final int b) throws IOException 
+        {
+            if (hasBeenClosed) {throw new IOException("The stream has been closed.");}
+                
+            // don't log nulls
+            if (b == 0) return;
+                
+            // force flush on newline character, dropping the newline.
+            if ((byte) b == '\n') 
+            {
+                flush();
+                return;
+            }
+                
+            // would this be writing past the buffer?
+            if (count == curBufLength) 
+            {
+                // grow the buffer
+                final int newBufLength = curBufLength + DEFAULT_BUFFER_LENGTH;
+                final byte[] newBuf = new byte[newBufLength];
+                System.arraycopy(buf, 0, newBuf, 0, curBufLength);
+                buf = newBuf;
+                curBufLength = newBufLength;
+            }
 
-	        buf[count] = (byte) b;
-	        
-	        count++;
-	    }
+            buf[count] = (byte) b;
+               
+            count++;
+        }
 
-	    @SuppressWarnings("deprecation")
-		public void flush() 
-	    {
-	        if (count == 0) return;
-	        
-	        final byte[] bytes = new byte[count];
+        public void flush() 
+        {
+            if (count == 0) return;
+                
+            final byte[] bytes = new byte[count];
 
-	        System.arraycopy(buf, 0, bytes, 0, count);
-	        
-	        String str = new String(bytes);
-	        
-	        LCD.consoleLogNoFormat(str);
-	        
-	        count = 0;
-	    }
+            System.arraycopy(buf, 0, bytes, 0, count);
+                
+            String str = new String(bytes);
+                
+            consoleLog(str);
+                
+            count = 0;
+        }
 
-	    public void close() 
-	    {
-	        flush();
-	        hasBeenClosed = true;
-	    }
-	}
+        public void close() 
+        {
+            flush();
+            hasBeenClosed = true;
+        }
+    }
 
-	/**
+    /**
      * Returns program location where call to this method is located.
      */
     public static String currentMethod()
@@ -220,42 +217,42 @@ public class Logging
         }
         catch (Throwable e)
         {
-			return "method not found";
+            return "method not found";
         }
-	}
+    }
 
-	// Works the same as LCD.consoleLog but automatically includes the program location from which
-	// trace was called.
+    // Works the same as LCD.consoleLog but automatically includes the program location from which
+    // trace was called.
     
     /**
      * Write message to console log with optional formatting and program location.
      * @param message Message with optional format specifiers for listed parameters.
      * @param parms Parameter list matching format specifiers.
      */
-	public static void consoleLog(String message, Object... parms)
-	{
-		// logs to the console as well as our log file on RR disk.
-		logger.log(Level.INFO, String.format("robot: %s: %s", currentMethod(2), String.format(message, parms)));
-	}
+    public static void consoleLog(String message, Object... parms)
+    {
+        // logs to the console as well as our log file on RR disk.
+        logger.log(Level.INFO, String.format("robot: %s: %s", currentMethod(2), String.format(message, parms)));
+    }
     
-	/**
-	 * Write blank line with program location to the console log.
-	 */
-	public static void consoleLog()
-	{
-		// logs to the console as well as our log file on RR disk.
-		logger.log(Level.INFO, String.format("robot: %s", currentMethod(2)));
-	}
+    /**
+     * Write blank line with program location to the console log.
+     */
+    public static void consoleLog()
+    {
+        // logs to the console as well as our log file on RR disk.
+        logger.log(Level.INFO, String.format("robot: %s", currentMethod(2)));
+    }
 
-	/**
-	 * Write exception message to DS console window and exception stack trace to
-	 * log file.
-	 * @param e The exception to log.
-	 */
-	public static void logException(Throwable e)
-	{
-		DriverStation.reportError(e.toString(), false);
-		
-		e.printStackTrace(Util.logPrintStream);
-	}
+    /**
+     * Write exception message to DS console window and exception stack trace to
+     * log file.
+     * @param e The exception to log.
+     */
+    public static void logException(Throwable e)
+    {
+        DriverStation.reportError(e.toString(), false);
+                
+        e.printStackTrace(Logging.logPrintStream);
+    }
 }
