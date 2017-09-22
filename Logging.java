@@ -40,29 +40,7 @@ public class Logging
 	{
 		
 	}
-	
-	/**
-	 * Read properties file from RobRio disk into a Properties object.
-	 * @return A Properties object.
-	 */
-	public static Properties readProperties() throws IOException
-	{
-		consoleLog();
 		
-		Properties props = new Properties();
-		
-		FileInputStream is = new FileInputStream("/home/lvuser/Robot.properties");
-		
-		props.load(is);
-		
-		is.close();
-		
-		//props.list(new PrintStream(System.out));
-		props.list(logPrintStream);
-
-		return props;
-	}
-	
 	/**
 	 * Configures and holds (static) classes for our custom logging system. 
 	 * Call setup() method to initialize logging.
