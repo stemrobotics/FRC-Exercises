@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class Logging
 {
-	/**
+    /**
      * Open print stream that writes to the log file. Example of use:
      * exception.printStackTrace(Util.logPrintStream);
      */
@@ -126,9 +126,9 @@ public class Logging
     private static class LoggingOutputStream extends OutputStream 
     {
         private static final int    DEFAULT_BUFFER_LENGTH = 2048;
-        private boolean                     hasBeenClosed = false;
-        private byte[]                              buf;
-        private int                                 count, curBufLength;
+        private boolean             hasBeenClosed = false;
+        private byte[]              buf;
+        private int                 count, curBufLength;
 
         public LoggingOutputStream()
         {
