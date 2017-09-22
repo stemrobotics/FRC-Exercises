@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -35,9 +36,31 @@ public class Logging
 	
 	// Private constructor means this class cannot be instantiated. All access is static.
 	
-	private Util()
+	private Logging()
 	{
 		
+	}
+	
+	/**
+	 * Read properties file from RobRio disk into a Properties object.
+	 * @return A Properties object.
+	 */
+	public static Properties readProperties() throws IOException
+	{
+		consoleLog();
+		
+		Properties props = new Properties();
+		
+		FileInputStream is = new FileInputStream("/home/lvuser/Robot.properties");
+		
+		props.load(is);
+		
+		is.close();
+		
+		//props.list(new PrintStream(System.out));
+		props.list(logPrintStream);
+
+		return props;
 	}
 	
 	/**
@@ -170,7 +193,7 @@ public class Logging
 	    }
 
 	    @SuppressWarnings("deprecation")
-  		public void flush() 
+		public void flush() 
 	    {
 	        if (count == 0) return;
 	        
@@ -193,45 +216,45 @@ public class Logging
 	}
 
 	/**
-   * Returns program location where call to this method is located.
-   */
-  public static String currentMethod()
-  {
-      return currentMethod(2);
-  }
+     * Returns program location where call to this method is located.
+     */
+    public static String currentMethod()
+    {
+        return currentMethod(2);
+    }
 
-  private static String currentMethod(Integer level)
-  {
-      StackTraceElement stackTrace[];
+    private static String currentMethod(Integer level)
+    {
+        StackTraceElement stackTrace[];
     
-      stackTrace = new Throwable().getStackTrace();
+        stackTrace = new Throwable().getStackTrace();
 
-      // This scheme depends on having one level in the package name between
-      // Team4450 and the class name, ie: Team4450.lib.Util.method. New levels
-      // will require rewrite.
+        // This scheme depends on having one level in the package name between
+        // team1111 and the class name, ie: team1111.robot.Logging.method. New levels
+        // will require rewrite.
         
-      try
-      {
-          String method = stackTrace[level].toString().split("4450.")[1];
+        try
+        {
+            String method = stackTrace[level].toString().split("1111.")[1];
             
-          int startPos = method.indexOf(".") + 1;
+            int startPos = method.indexOf(".") + 1;
             
-          return method.substring(startPos);
-      }
-      catch (Throwable e)
-      {
-    			return "method not found";
-      }
+            return method.substring(startPos);
+        }
+        catch (Throwable e)
+        {
+			return "method not found";
+        }
 	}
 
 	// Works the same as LCD.consoleLog but automatically includes the program location from which
 	// trace was called.
     
-  /**
-   * Write message to console log with optional formatting and program location.
-   * @param message Message with optional format specifiers for listed parameters.
-   * @param parms Parameter list matching format specifiers.
-   */
+    /**
+     * Write message to console log with optional formatting and program location.
+     * @param message Message with optional format specifiers for listed parameters.
+     * @param parms Parameter list matching format specifiers.
+     */
 	public static void consoleLog(String message, Object... parms)
 	{
 		// logs to the console as well as our log file on RR disk.
