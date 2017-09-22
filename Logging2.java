@@ -28,7 +28,15 @@ public class Robot extends SampleRobot
      */
     public Robot() 
     {
-        System.out.println("Robot.constructor()");
+        // Set up our custom logger.
+        
+        try
+        {
+            Logging.CustomLogger.setup();
+        }
+        catch (Throwable e) { Logging.logException(e);}
+        
+        Logging.consoleLog();
 
         myRobot = new RobotDrive(0, 1);  // 2 motors on PWM ports 0 & 1.
         myRobot.setExpiration(0.1);      // need to see motor input at least every 
@@ -43,7 +51,7 @@ public class Robot extends SampleRobot
      */
     public void robotInit() 
     {
-        System.out.println("Robot.robotInit()");
+        Logging.consoleLog();
     }
 
     /**
@@ -53,7 +61,7 @@ public class Robot extends SampleRobot
      */
     public void autonomous() 
     {
-        System.out.println("Robot.autonomous()");
+        Logging.consoleLog("I can log any information I want");
 
         myRobot.setSafetyEnabled(false);  // motor safety off due to the fact
                                           // we want the motor to run 2 sec
@@ -70,7 +78,7 @@ public class Robot extends SampleRobot
      */
     public void operatorControl() 
     {
-        System.out.println("Robot.operatorControl()");
+        Logging.consoleLog();
 
         myRobot.setSafetyEnabled(true);   // motor safety back on.
     
@@ -87,7 +95,7 @@ public class Robot extends SampleRobot
      */
     public void disabled()
     {
-        System.out.println("Robot.disabled()");
+        Logging.consoleLog();
     }
 
     /**
@@ -95,6 +103,6 @@ public class Robot extends SampleRobot
      */
     public void test() 
     {
-        System.out.println("Robot.test()");
+        Logging.consoleLog();
     }
 }
