@@ -221,9 +221,6 @@ public class Logging
         }
     }
 
-    // Works the same as LCD.consoleLog but automatically includes the program location from which
-    // trace was called.
-    
     /**
      * Write message to console log with optional formatting and program location.
      * @param message Message with optional format specifiers for listed parameters.
