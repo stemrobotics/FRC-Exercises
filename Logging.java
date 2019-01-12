@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1111.robot;
+package frc.robot;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,27 +45,27 @@ public class Logging
      */
     public static class CustomLogger 
     {
-     	static private FileHandler              fileTxt;
-       	static private LogFormatter             logFormatter;
+        static private FileHandler              fileTxt;
+        static private LogFormatter             logFormatter;
         
-       	/**
-       	 *  Initializes our logging system.
-       	 *  Call before using any logging methods.
-       	 */
-       	static public void setup() throws IOException 
-       	{
-       		// get the global logger to configure it and add a file handler.
-       		Logger logger = Logger.getGlobal();
+        /**
+         *  Initializes our logging system.
+         *  Call before using any logging methods.
+         */
+        static public void setup() throws IOException 
+        {
+                // get the global logger to configure it and add a file handler.
+                Logger logger = Logger.getGlobal();
                    
-       		logger.setLevel(Level.ALL);
+                logger.setLevel(Level.ALL);
 
-       		// If we decide to redirect system.out to our log handler, then following
-       		// code will delete the default log handler for the console to prevent
-       		// a recursive loop. We would only redirect system.out if we only want to
-       		// log to the file. If we delete the console hanlder we can skip setting
-       		// the formatter...otherwise we set our formatter on the console logger.
+                // If we decide to redirect system.out to our log handler, then following
+                // code will delete the default log handler for the console to prevent
+                // a recursive loop. We would only redirect system.out if we only want to
+                // log to the file. If we delete the console hanlder we can skip setting
+                // the formatter...otherwise we set our formatter on the console logger.
             
-       		Logger rootLogger = Logger.getLogger("");
+                Logger rootLogger = Logger.getLogger("");
 
             Handler[] handlers = rootLogger.getHandlers();
             
@@ -92,7 +92,7 @@ public class Logging
             fileTxt.setFormatter(logFormatter);
 
             logger.addHandler(fileTxt);
-       	}
+        }
     }
         
     // Our custom formatter for logging output.
@@ -204,12 +204,12 @@ public class Logging
         stackTrace = new Throwable().getStackTrace();
 
         // This scheme depends on having one level in the package name between
-        // team1111 and the class name, ie: team1111.robot.Logging.method. New levels
+        // frc and the class name, ie: frc.robot.Logging.method. New levels
         // will require rewrite.
         
         try
         {
-            String method = stackTrace[level].toString().split("1111.")[1];
+            String method = stackTrace[level].toString().split("frc.")[1];
             
             int startPos = method.indexOf(".") + 1;
             
